@@ -1,11 +1,11 @@
 # Hotel Booking API
 
-A comprehensive Node.js + Express API backend built with TypeScript for a hotel booking system. Features traditional search capabilities and AI-powered semantic search using OpenAI embeddings and Supabase vector database.
+A comprehensive Node.js + Express API backend built with TypeScript for a hotel booking system. Features traditional search capabilities and AI-powered semantic search using Google Gemini embeddings and Supabase vector database.
 
 ## Features
 
 - 🏨 **Hotel Search**: Traditional filtering by city, dates, and occupancy
-- 🤖 **AI/RAG Search**: Natural language semantic search using OpenAI embeddings
+- 🤖 **AI/RAG Search**: Natural language semantic search using Google Gemini embeddings
 - 📅 **Booking Management**: Complete CRUD operations for hotel bookings
 - 🔐 **Authentication**: Secure JWT-based auth via Supabase Auth
 - 📊 **Database**: Supabase with pgvector for vector similarity search
@@ -17,7 +17,7 @@ A comprehensive Node.js + Express API backend built with TypeScript for a hotel 
 
 - **Backend**: Node.js, Express.js, TypeScript
 - **Database**: Supabase (PostgreSQL with pgvector)
-- **AI/ML**: OpenAI API for embeddings
+- **AI/ML**: Google Gemini API for embeddings
 - **Authentication**: Supabase Auth (JWT)
 - **Validation**: Zod
 - **Logging**: Winston
@@ -25,7 +25,18 @@ A comprehensive Node.js + Express API backend built with TypeScript for a hotel 
 
 ## Quick Start
 
-1. **Clone and install dependencies**:
+### 🚀 3-Step Setup
+
+1. **Database Setup**: Run `sql-scripts/supabase-setup.sql` in Supabase SQL Editor
+2. **Add Hotels**: Run `sql-scripts/sri-lanka-hotels-extended.sql` in Supabase SQL Editor  
+3. **Generate Embeddings**: Run `node generate-embeddings-script.js`
+
+### 📖 Detailed Setup
+See [SETUP-GUIDE.md](./SETUP-GUIDE.md) for complete setup instructions.
+
+### 🏃‍♂️ Quick Development Start
+
+1. **Install dependencies**:
    ```bash
    npm install
    ```

@@ -178,7 +178,7 @@ export class RagSearchService {
   ): Promise<any[]> {
     try {
       // Use Supabase's vector similarity search with pgvector
-      const { data: hotels, error } = await supabase.rpc('search_hotels_by_similarity_flexible', {
+      const { data: hotels, error } = await supabase.rpc('search_hotels_by_similarity_generic', {
         query_embedding: queryEmbedding,
         similarity_threshold: this.SIMILARITY_THRESHOLD,
         match_count: this.MAX_RESULTS * 2, // Get more results for filtering

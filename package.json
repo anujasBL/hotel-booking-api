@@ -9,7 +9,10 @@
     "start": "node dist/server.js",
     "test": "jest",
     "lint": "eslint src/**/*.ts",
-    "lint:fix": "eslint src/**/*.ts --fix"
+    "lint:fix": "eslint src/**/*.ts --fix",
+    "setup": "node setup.js",
+    "generate-embeddings": "node generate-embeddings-script.js",
+    "test-gemini": "node test-gemini-connection.js"
   },
   "keywords": [
     "hotel",
