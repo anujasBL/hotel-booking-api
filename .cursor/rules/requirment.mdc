@@ -1,0 +1,47 @@
+# Cursor Rules for Hotel Booking Backend
+
+project_type: backend
+framework: express
+language: typescript
+
+rules:
+  # Project Setup
+  - Use Node.js + Express.js with TypeScript.
+  - Default Node.js version: nvs use lts
+  - Use Supabase JS client for:
+      - Database queries (hotels, rooms, bookings)
+      - Vector search (pgvector) for semantic/RAG queries
+      - Authentication (JWT)
+  - Store secrets in .env files, never hardcode API keys.
+  - Use Zod to validate request payloads.
+  - Use async/await with proper error handling middleware.
+  - Log errors and requests using winston or pino.
+
+  # API Structure
+  - Base API namespace: /api/v1
+  - Routes:
+    - /api/v1/hotels/search → traditional hotel search
+      - Filters: city, check-in/check-out, occupancy (adults, children, rooms)
+      - Query Supabase DB for matches
+    - /api/v1/hotels/chat-search → AI/RAG search
+      - Accepts natural language query
+      - Generates embedding using OpenAI API
+      - Queries Supabase vector DB for semantic hotel matches
+      - Returns top results to frontend
+    - /api/v1/bookings → manage hotel bookings
+    - /api/v1/users → authentication/authorization using Supabase Auth
+
+  # Services & Controllers
+  - Organize logic with:
+      - /controllers → handle HTTP requests
+      - /services → business logic (search, chat, bookings)
+      - /models → TypeScript interfaces for Hotel, Room, Booking
+  - Implement both traditional search and RAG search as separate service modules.
+
+  # Security & Validation
+  - Validate all incoming payloads.
+  - Authenticate users via JWT for booking endpoints.
+  - Ensure proper CORS setup for frontend domain.
+
+  # Documentation
+  - Include Swagger/OpenAPI docs for all API routes under /docs

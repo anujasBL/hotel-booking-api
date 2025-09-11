@@ -1,0 +1,305 @@
+### Hotel Booking API - Test Collection
+### Use this file with REST Client extension in VS Code or similar tools
+
+# Variables
+@baseUrl = http://localhost:3000/api/v1
+@token = your_jwt_token_here
+
+### Health Check
+GET {{baseUrl}}/health
+
+### API Version Info
+GET {{baseUrl}}/version
+
+### User Registration
+POST {{baseUrl}}/users/register
+Content-Type: application/json
+
+{
+  "email": "john.doe@example.com",
+  "password": "password123",
+  "firstName": "John",
+  "lastName": "Doe",
+  "phoneNumber": "+1234567890",
+  "dateOfBirth": "1990-01-01"
+}
+
+### User Login
+POST {{baseUrl}}/users/login
+Content-Type: application/json
+
+{
+  "email": "john.doe@example.com",
+  "password": "password123"
+}
+
+### Get User Profile (Protected)
+GET {{baseUrl}}/users/profile
+Authorization: Bearer {{token}}
+
+### Update User Profile (Protected)
+PUT {{baseUrl}}/users/profile
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "firstName": "John Updated",
+  "lastName": "Doe Updated",
+  "phoneNumber": "+1987654321"
+}
+
+### Change Password (Protected)
+POST {{baseUrl}}/users/change-password
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "currentPassword": "password123",
+  "newPassword": "newpassword123"
+}
+
+### Logout (Protected)
+POST {{baseUrl}}/users/logout
+Authorization: Bearer {{token}}
+
+### Traditional Hotel Search
+GET {{baseUrl}}/hotels/search?city=New York&checkIn=2024-12-01&checkOut=2024-12-03&adults=2&children=0&rooms=1&page=1&limit=10
+
+### Hotel Search with Filters
+GET {{baseUrl}}/hotels/search?city=Miami&checkIn=2024-12-15&checkOut=2024-12-18&adults=2&children=1&rooms=1&starRating=4&starRating=5&amenities=pool&amenities=spa&minPrice=100&maxPrice=500&sortBy=price&sortOrder=asc
+
+### AI-Powered Semantic Search
+POST {{baseUrl}}/hotels/chat-search
+Content-Type: application/json
+
+{
+  "query": "I need a luxury hotel in New York with a spa and pool for my anniversary weekend",
+  "checkIn": "2024-12-01T00:00:00.000Z",
+  "checkOut": "2024-12-03T00:00:00.000Z",
+  "guests": {
+    "adults": 2,
+    "children": 0,
+    "rooms": 1
+  },
+  "filters": {
+    "maxPrice": 500,
+    "starRating": [4, 5],
+    "amenities": ["spa", "pool", "wifi"]
+  }
+}
+
+### Complex Semantic Search
+POST {{baseUrl}}/hotels/chat-search
+Content-Type: application/json
+
+{
+  "query": "Find me a family-friendly resort near the beach with kids club and multiple dining options for a week-long vacation",
+  "checkIn": "2024-07-01T00:00:00.000Z",
+  "checkOut": "2024-07-08T00:00:00.000Z",
+  "guests": {
+    "adults": 2,
+    "children": 2,
+    "rooms": 2
+  },
+  "filters": {
+    "maxPrice": 300,
+    "amenities": ["pool", "restaurant", "kids_club", "beach_access"]
+  }
+}
+
+### Get Hotel by ID
+GET {{baseUrl}}/hotels/123e4567-e89b-12d3-a456-426614174000
+
+### Get Hotel by ID with Availability Check
+GET {{baseUrl}}/hotels/123e4567-e89b-12d3-a456-426614174000?checkIn=2024-12-01&checkOut=2024-12-03&adults=2&children=0&rooms=1
+
+### Check Room Availability
+POST {{baseUrl}}/bookings/availability/check
+Content-Type: application/json
+
+{
+  "hotelId": "123e4567-e89b-12d3-a456-426614174000",
+  "roomId": "456e7890-e89b-12d3-a456-426614174001",
+  "checkInDate": "2024-12-01T00:00:00.000Z",
+  "checkOutDate": "2024-12-03T00:00:00.000Z",
+  "roomsRequested": 1
+}
+
+### Create Booking (Protected)
+POST {{baseUrl}}/bookings
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "hotelId": "123e4567-e89b-12d3-a456-426614174000",
+  "roomId": "456e7890-e89b-12d3-a456-426614174001",
+  "checkInDate": "2024-12-01T00:00:00.000Z",
+  "checkOutDate": "2024-12-03T00:00:00.000Z",
+  "guests": {
+    "adults": 2,
+    "children": 0
+  },
+  "guestInfo": [
+    {
+      "firstName": "John",
+      "lastName": "Doe",
+      "email": "john.doe@example.com",
+      "phoneNumber": "+1234567890"
+    },
+    {
+      "firstName": "Jane",
+      "lastName": "Doe",
+      "email": "jane.doe@example.com",
+      "phoneNumber": "+1234567890"
+    }
+  ],
+  "roomsBooked": 1,
+  "paymentMethod": "credit_card",
+  "specialRequests": "Late check-in please, arriving around 10 PM"
+}
+
+### Get User's Bookings (Protected)
+GET {{baseUrl}}/bookings?page=1&limit=10&sortBy=checkInDate&sortOrder=desc
+Authorization: Bearer {{token}}
+
+### Get User's Bookings with Status Filter (Protected)
+GET {{baseUrl}}/bookings?status=confirmed&status=pending&page=1&limit=5
+Authorization: Bearer {{token}}
+
+### Get Booking by ID (Protected)
+GET {{baseUrl}}/bookings/789e0123-e89b-12d3-a456-426614174002
+Authorization: Bearer {{token}}
+
+### Update Booking (Protected)
+PUT {{baseUrl}}/bookings/789e0123-e89b-12d3-a456-426614174002
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "guestInfo": [
+    {
+      "firstName": "John Updated",
+      "lastName": "Doe",
+      "email": "john.doe@example.com",
+      "phoneNumber": "+1234567890"
+    },
+    {
+      "firstName": "Jane Updated",
+      "lastName": "Doe",
+      "email": "jane.doe@example.com",
+      "phoneNumber": "+1234567890"
+    }
+  ],
+  "specialRequests": "Updated: Need ground floor room due to mobility issues"
+}
+
+### Cancel Booking (Protected)
+POST {{baseUrl}}/bookings/789e0123-e89b-12d3-a456-426614174002/cancel
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "reason": "Change of travel plans due to work commitments"
+}
+
+### Get All Hotels (Admin - Protected)
+GET {{baseUrl}}/hotels?page=1&limit=20
+Authorization: Bearer {{token}}
+
+### Generate Hotel Embeddings (Admin - Protected)
+POST {{baseUrl}}/hotels/embeddings/generate
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "hotelId": "123e4567-e89b-12d3-a456-426614174000"
+}
+
+### Generate All Hotel Embeddings (Admin - Protected)
+POST {{baseUrl}}/hotels/embeddings/generate
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{}
+
+### Refresh Access Token
+POST {{baseUrl}}/users/refresh-token
+Content-Type: application/json
+
+{
+  "refreshToken": "your_refresh_token_here"
+}
+
+### Forgot Password
+POST {{baseUrl}}/users/forgot-password
+Content-Type: application/json
+
+{
+  "email": "john.doe@example.com"
+}
+
+### Verify Email
+POST {{baseUrl}}/users/verify-email
+Content-Type: application/json
+
+{
+  "token": "verification_token_here"
+}
+
+### Error Testing - Invalid Hotel ID
+GET {{baseUrl}}/hotels/invalid-uuid
+
+### Error Testing - Invalid Request Body
+POST {{baseUrl}}/hotels/chat-search
+Content-Type: application/json
+
+{
+  "query": "",
+  "invalidField": "should cause validation error"
+}
+
+### Error Testing - Unauthorized Access
+GET {{baseUrl}}/bookings
+# No Authorization header - should return 401
+
+### Error Testing - Non-existent Booking
+GET {{baseUrl}}/bookings/00000000-0000-0000-0000-000000000000
+Authorization: Bearer {{token}}
+
+### Performance Testing - Complex Search
+POST {{baseUrl}}/hotels/chat-search
+Content-Type: application/json
+
+{
+  "query": "I'm planning a business trip to downtown Manhattan. I need a sophisticated hotel with excellent business amenities, close to financial district, with premium rooms that have city views, high-speed internet, and 24/7 room service. The hotel should have a business center, meeting rooms, and be within walking distance of subway stations. I prefer hotels with concierge services and valet parking.",
+  "checkIn": "2024-12-01T00:00:00.000Z",
+  "checkOut": "2024-12-05T00:00:00.000Z",
+  "guests": {
+    "adults": 1,
+    "children": 0,
+    "rooms": 1
+  },
+  "filters": {
+    "maxPrice": 800,
+    "starRating": [4, 5],
+    "amenities": ["wifi", "business_center", "concierge", "valet_parking", "room_service"]
+  }
+}
+
+### Testing Date Range Search
+GET {{baseUrl}}/hotels/search?city=Los Angeles&checkIn=2024-06-01&checkOut=2024-06-07&adults=4&children=2&rooms=2&amenities=pool&amenities=restaurant&sortBy=rating&sortOrder=desc
+
+### Testing Weekend Pricing
+GET {{baseUrl}}/hotels/search?city=Las Vegas&checkIn=2024-12-07&checkOut=2024-12-09&adults=2&children=0&rooms=1&sortBy=price&sortOrder=asc
+
+### Testing Long Stay Booking
+POST {{baseUrl}}/bookings/availability/check
+Content-Type: application/json
+
+{
+  "hotelId": "123e4567-e89b-12d3-a456-426614174000",
+  "roomId": "456e7890-e89b-12d3-a456-426614174001",
+  "checkInDate": "2024-12-01T00:00:00.000Z",
+  "checkOutDate": "2024-12-15T00:00:00.000Z",
+  "roomsRequested": 2
+}
