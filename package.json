@@ -11,8 +11,16 @@
     "lint": "eslint src/**/*.ts",
     "lint:fix": "eslint src/**/*.ts --fix",
     "setup": "node setup.js",
+    "setup-images": "node setup-image-classification.js",
     "generate-embeddings": "node generate-embeddings-script.js",
-    "test-gemini": "node test-gemini-connection.js"
+    "test-gemini": "node test-gemini-connection.js",
+    "update-images": "node update-hotel-images.js",
+    "upload-images": "node upload-hotel-images.js",
+    "upload-classified": "node upload-hotel-images.js classify-upload",
+    "compress-images": "node compress-large-images.js",
+    "classify-images": "node classify-and-upload-images.js",
+    "sync-images": "node update-hotel-images-array.js sync",
+    "image-status": "node update-hotel-images-array.js status"
   },
   "keywords": [
     "hotel",
@@ -34,6 +42,7 @@
     "express": "^4.18.2",
     "helmet": "^7.0.0",
     "jsonwebtoken": "^9.0.2",
+    "sharp": "^0.33.5",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.0",
     "uuid": "^9.0.1",

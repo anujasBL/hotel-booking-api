@@ -108,6 +108,35 @@ node generate-embeddings-script.js
 -- Run in Supabase SQL Editor (optional)
 -- File: sql-scripts/sample-data.sql
 -- File: sql-scripts/sri-lanka-missing-data-fix.sql
+-- File: sql-scripts/update-hotel-images.sql
+```
+
+### 5. Setup Image Storage (Optional)
+```sql
+-- Run in Supabase SQL Editor to enable image uploads
+-- File: sql-scripts/setup-supabase-storage.sql
+```
+
+### 6. Setup Image Classification (Optional)
+```bash
+# Setup intelligent image classification system
+npm run setup-images
+```
+
+### 7. Update Hotel Images (Optional)
+```bash
+# Option 1: Use external URLs (Unsplash)
+npm run update-images
+
+# Option 2: Upload your own images to Supabase Storage
+npm run upload-images list                    # List available hotels
+npm run upload-images upload "Hotel Name" ./images/  # Upload images
+
+# Option 3: Intelligent classification and upload
+npm run classify-images ./images              # Auto-classify and upload images
+
+# Or run the SQL script directly in Supabase SQL Editor
+-- File: sql-scripts/update-hotel-images.sql
 ```
 
 ## 🧪 Testing
@@ -194,13 +223,176 @@ After successful setup:
 4. **"Function does not exist"**
    - Re-run `sql-scripts/supabase-setup.sql` in Supabase SQL Editor
 
+## 🖼️ Image Management
+
+### Option 1: External URLs (Unsplash)
+Quick setup with high-quality external images:
+
+```bash
+# Update all hotels with Unsplash images
+npm run update-images
+```
+
+**Features:**
+- High-quality, royalty-free images from Unsplash
+- Optimized for web (800x600 pixels)
+- Categorized by hotel type (luxury, business, budget, eco, heritage)
+
+### Option 2: Supabase Storage (Your Own Images)
+Upload and manage your own images:
+
+#### Setup Storage
+```sql
+-- Run in Supabase SQL Editor
+-- File: sql-scripts/setup-supabase-storage.sql
+```
+
+#### Upload Images
+```bash
+# List available hotels
+npm run upload-images list
+
+# Upload single image
+npm run upload-images upload "Royal Palace Kandy" ./images/hotel1.jpg
+
+# Upload multiple images
+npm run upload-images upload "Royal Palace Kandy" ./images/hotel1.jpg ./images/hotel2.jpg
+
+# Upload all images from directory
+npm run upload-images upload "Royal Palace Kandy" ./images/
+
+# Delete all images for a hotel
+npm run upload-images delete "Royal Palace Kandy"
+```
+
+**Features:**
+- Store images directly in Supabase
+- Public URLs for easy access
+- 5MB file size limit
+- Support for JPEG, PNG, WebP, GIF
+- Automatic URL generation
+- Image management functions
+
+### Option 3: Intelligent Image Classification (AI-Powered)
+Automatically classify and assign images to hotels:
+
+#### Setup Classification System
+```bash
+# Setup the intelligent classification system
+npm run setup-images
+```
+
+#### Classify and Upload Images
+```bash
+# Auto-classify and upload all images from a folder
+npm run classify-images ./images
+
+# The system will automatically:
+# 1. Analyze each image (colors, brightness, contrast, visual elements)
+# 2. Classify images by type (luxury, business, budget, eco, heritage, beach, mountain)
+# 3. Find best matching hotels based on characteristics
+# 4. Upload to Supabase Storage
+# 5. Update hotel records with image URLs
+```
+
+**AI Classification Features:**
+- **Visual Analysis**: Analyzes colors, brightness, contrast, and visual elements
+- **Smart Matching**: Matches images to hotels based on star rating, amenities, and location
+- **Automatic Upload**: Direct upload to Supabase Storage with organized file structure
+- **Intelligent Categorization**: 7 categories (luxury, business, budget, eco, heritage, beach, mountain)
+- **Confidence Scoring**: Provides confidence scores for each classification
+- **Batch Processing**: Processes entire folders of images automatically
+
+**Classification Rules:**
+- **Luxury**: 5-star hotels, palaces, resorts with spa/butler services
+- **Business**: 4-5 star hotels with business centers and meeting rooms
+- **Budget**: 2-3 star hotels, inns, rest houses with basic amenities
+- **Eco**: Nature-focused hotels with sustainable features
+- **Heritage**: Colonial, historic, traditional architecture
+- **Beach**: Coastal hotels with ocean views and water sports
+- **Mountain**: Hill country hotels with scenic views and hiking trails
+
+### Image Storage Structure
+```
+Supabase Storage:
+├── hotel-images/
+│   ├── hotels/
+│   │   ├── {hotel-id}/
+│   │   │   ├── image_1.jpg
+│   │   │   ├── image_2.jpg
+│   │   │   └── image_3.jpg
+│   │   └── ...
+│   └── room-images/ (optional)
+```
+
+### Database Functions
+```sql
+-- Add image to hotel
+SELECT add_hotel_image('hotel-id', 'path/to/image.jpg', 1);
+
+-- Remove image from hotel
+SELECT remove_hotel_image('hotel-id', 1);
+
+-- Get public URL
+SELECT get_public_url('hotel-images', 'hotels/hotel-id/image_1.jpg');
+```
+
+### Manual Image Updates
+```sql
+-- Update with custom URLs
+UPDATE hotels 
+SET images = ARRAY[
+    'https://your-domain.com/image1.jpg',
+    'https://your-domain.com/image2.jpg'
+]
+WHERE name = 'Your Hotel Name';
+
+-- Update with Supabase Storage URLs
+UPDATE hotels 
+SET images = ARRAY[
+    'https://your-project.supabase.co/storage/v1/object/public/hotel-images/hotels/hotel-id/image_1.jpg'
+]
+WHERE name = 'Your Hotel Name';
+```
+
+## 8. Sync Hotel Images (After Upload)
+
+After uploading images to Supabase Storage, you need to update the hotel records with the new image URLs:
+
+### **Check Image Status**
+```bash
+# See which hotels have images and their sync status
+npm run image-status
+```
+
+### **Sync All Hotel Images**
+```bash
+# Update all hotel records with their uploaded images
+npm run sync-images
+```
+
+### **Sync Specific Hotel**
+```bash
+# Update a specific hotel's images
+node update-hotel-images-array.js sync-hotel <hotel-id>
+```
+
+### **What the Sync Script Does**
+- ✅ **Fetches all hotels** from the database
+- ✅ **Checks Supabase Storage** for uploaded images
+- ✅ **Generates public URLs** for all stored images
+- ✅ **Updates hotel records** with the correct image URLs
+- ✅ **Shows detailed progress** and results
+- ✅ **Handles errors gracefully** and continues processing
+
 ## 📝 Next Steps
 
-1. **Customize hotel data** in `sql-scripts/sample-data.sql`
-2. **Add more cities** by extending the hotel data
-3. **Configure authentication** for production use
-4. **Set up monitoring** and logging
-5. **Deploy to production** using `DEPLOYMENT.md`
+1. **Upload and sync hotel images** using the provided scripts
+2. **Customize hotel data** in `sql-scripts/sample-data.sql`
+3. **Add more cities** by extending the hotel data
+4. **Configure authentication** for production use
+5. **Set up monitoring** and logging
+6. **Deploy to production** using `DEPLOYMENT.md`
 
 ## 🔗 Useful Links
 
