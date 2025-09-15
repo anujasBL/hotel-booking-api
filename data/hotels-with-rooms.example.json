@@ -1,0 +1,42 @@
+[
+  {
+    "name": "Grand Hotel Colombo",
+    "star_rating": "5",
+    "location": { "city": "Colombo", "address": "123 Galle Road" },
+    "amenities": ["Free WiFi", "Swimming Pool", "Fitness Center", "Restaurant", "Spa"],
+    "images": [
+      "https://your-project.supabase.co/storage/v1/object/public/hotel-images/hotels/<hotel-id>/image_1.jpg"
+    ],
+    "rooms": [
+      {
+        "type": "Standard Room",
+        "base_price": 12000,
+        "max_occupancy": 2,
+        "amenities": ["Free WiFi", "Air Conditioning", "TV", "Private Bathroom"]
+      },
+      {
+        "type": "Deluxe Room",
+        "base_price": 18000,
+        "max_occupancy": 3,
+        "amenities": ["Free WiFi", "Air Conditioning", "TV", "Private Bathroom", "City View"]
+      },
+      {
+        "type": "Suite",
+        "base_price": 28000,
+        "max_occupancy": 4,
+        "amenities": ["Free WiFi", "Air Conditioning", "TV", "Private Bathroom", "Living Area"]
+      }
+    ]
+  },
+  {
+    "name": "Kandy Hills Resort",
+    "star_rating": "4",
+    "location": { "city": "Kandy", "address": "45 Lake Round Rd" },
+    "amenities": ["Free WiFi", "Restaurant", "Parking", "Garden"],
+    "images": [],
+    "rooms": [
+      { "type": "Standard Room", "base_price": 9500, "max_occupancy": 2, "amenities": ["Free WiFi", "TV"] },
+      { "type": "Family Room", "base_price": 15000, "max_occupancy": 4, "amenities": ["Free WiFi", "TV", "Mini Fridge"] }
+    ]
+  }
+]
