@@ -349,10 +349,45 @@ export const generateEmbeddings = asyncHandler(async (req: Request, res: Respons
   res.json(response);
 });
 
+/**
+ * @swagger
+ * /api/v1/hotels/{id}/rooms:
+ *   get:
+ *     summary: Get rooms for a specific hotel
+ *     tags: [Hotels]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *         description: Hotel ID
+ *     responses:
+ *       200:
+ *         description: Rooms retrieved successfully
+ */
+export const getHotelRooms = asyncHandler(async (req: Request, res: Response) => {
+  const { id } = req.params;
+
+  logger.info('Get hotel rooms request:', { hotelId: id });
+
+  const rooms = await hotelService.getRoomsByHotelId(id);
+
+  const response: ApiResponse = {
+    success: true,
+    data: rooms,
+    message: `Retrieved ${rooms.length} rooms`,
+  };
+
+  res.json(response);
+});
+
 export default {
   searchHotels,
   chatSearch,
   getHotelById,
   getAllHotels,
   generateEmbeddings,
+  getHotelRooms,
 };

@@ -375,6 +375,26 @@ export class HotelService {
       return sortOrder === 'desc' ? -comparison : comparison;
     });
   }
+
+  async getRoomsByHotelId(hotelId: string): Promise<any[]> {
+    try {
+      const { data: rooms, error } = await supabase
+        .from('rooms')
+        .select('*')
+        .eq('hotel_id', hotelId)
+        .eq('is_active', true)
+        .order('base_price');
+
+      if (error) {
+        throw new AppError('Failed to fetch rooms', 500);
+      }
+
+      return rooms || [];
+    } catch (error) {
+      logger.error('Failed to get rooms by hotel ID:', { hotelId, error });
+      throw error instanceof AppError ? error : new AppError('Failed to retrieve rooms', 500);
+    }
+  }
 }
 
 export default new HotelService();

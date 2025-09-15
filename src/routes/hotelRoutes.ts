@@ -45,6 +45,17 @@ router.get(
 );
 
 /**
+ * @route GET /api/v1/hotels/:id/rooms
+ * @desc Get rooms for a hotel
+ * @access Public
+ */
+router.get(
+  '/:id/rooms',
+  validate({ params: uuidParamSchema }),
+  hotelController.getHotelRooms
+);
+
+/**
  * @route GET /api/v1/hotels
  * @desc Get all hotels (admin endpoint)
  * @access Private (Admin)
